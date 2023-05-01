@@ -4,7 +4,7 @@ package ua.ithilell.hw5;
 
 
 
- */
+*/
 
 public class HomeWorkMain {
 
