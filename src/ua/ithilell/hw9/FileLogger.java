@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -39,8 +40,15 @@ public class FileLogger {
             File logFile = configuration.getFile();
 
             if (logFile.length() >= configuration.getMaxFileSize()) {
-                File oldLogFile = new File(logFile.getCanonicalFile().getParentFile() + File.separator + "log-" + formattedDateTime.replace(" ", "-") + ".txt");
-                logFile.renameTo(oldLogFile);
+
+                String dateTime = formattedDateTime.replace(" ", "-").replace(":", "-");
+
+                File oldLogFile = new File(logFile.getCanonicalFile().getParentFile() + File.separator + "log-" + dateTime + ".txt");
+
+                if (!oldLogFile.exists()) {
+                    Files.move(logFile.toPath(), oldLogFile.toPath());
+                }
+
                 //throw new FileMaxSizeReachedException(logFile);
             }
 
